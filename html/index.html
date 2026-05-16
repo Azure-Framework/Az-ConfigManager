@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Azure Config Manager</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div id="app" class="app hidden">
+        <div class="shell">
+            <aside class="sidebar">
+                <div class="brand">
+                    <div class="brand-mark">AZ</div>
+                    <div>
+                        <div class="brand-title">Azure Manager</div>
+                        <div class="brand-subtitle">Resource Config Control</div>
+                    </div>
+                </div>
+
+                <div class="search-box">
+                    <input id="resourceSearch" type="text" placeholder="Search resources, files, jobs..." autocomplete="off" />
+                </div>
+
+                <div class="side-actions">
+                    <button id="rescanBtn" class="btn btn-blue">Rescan</button>
+                    <button id="closeBtn" class="btn btn-ghost">Close</button>
+                </div>
+
+                <div class="stat-grid compact">
+                    <div class="stat-card"><span id="statResources">0</span><small>Resources</small></div>
+                    <div class="stat-card"><span id="statFiles">0</span><small>Files</small></div>
+                    <div class="stat-card"><span id="statFields">0</span><small>Fields</small></div>
+                </div>
+
+                <div class="filter-row">
+                    <button class="pill active" data-kind="all">All</button>
+                    <button class="pill" data-kind="Jobs">Jobs</button>
+                    <button class="pill" data-kind="Locations">Locations</button>
+                    <button class="pill" data-kind="Items/Values">Values</button>
+                    <button class="pill" data-kind="Callouts">Callouts</button>
+                </div>
+
+                <div id="resourceList" class="resource-list"></div>
+            </aside>
+
+            <main class="main">
+                <header class="topbar">
+                    <div>
+                        <h1 id="pageTitle">Config Manager</h1>
+                        <p id="pageSubtitle">Pick a resource and config file to edit safely in-game.</p>
+                    </div>
+                    <div class="top-actions">
+                        <button id="restartBtn" class="btn btn-warn hidden">Restart Resource</button>
+                        <button id="saveRawBtn" class="btn btn-blue hidden">Save Raw File</button>
+                    </div>
+                </header>
+
+                <section id="emptyState" class="empty-state">
+                    <div class="empty-icon">⚙</div>
+                    <h2>No config selected</h2>
+                    <p>Select a resource on the left. Fields are parsed automatically when possible, and every save creates a backup before writing.</p>
+                </section>
+
+                <section id="workspace" class="workspace hidden">
+                    <div class="workspace-left">
+                        <div class="panel file-panel">
+                            <div class="panel-title-row">
+                                <div>
+                                    <h2 id="resourceTitle">Resource</h2>
+                                    <p id="resourceState">State: unknown</p>
+                                </div>
+                            </div>
+                            <div id="fileList" class="file-list"></div>
+                        </div>
+                    </div>
+
+                    <div class="workspace-right">
+                        <div class="panel editor-panel">
+                            <div class="editor-head">
+                                <div>
+                                    <h2 id="fileTitle">File</h2>
+                                    <p id="fileMeta">Choose a file</p>
+                                </div>
+                                <div class="tabs">
+                                    <button class="tab active" data-tab="fields">Fields</button>
+                                    <button class="tab" data-tab="raw">Raw</button>
+                                    <button class="tab" data-tab="backups">Backups</button>
+                                </div>
+                            </div>
+
+                            <div id="fieldsTab" class="tab-panel active">
+                                <div class="helper-card">
+                                    <strong>Smart edit:</strong> edit strings, numbers, toggles, colors, JSON values, and vector coords without touching the raw config. Use Raw mode only for full custom tables.
+                                </div>
+                                <div class="field-tools">
+                                    <div class="mini-search">
+                                        <input id="fieldSearch" type="text" placeholder="Search fields, colors, coords, prices..." autocomplete="off" />
+                                    </div>
+                                    <label class="toggle-row"><input id="editableOnly" type="checkbox" /> Editable only</label>
+                                </div>
+                                <div id="fieldList" class="field-list"></div>
+                            </div>
+
+                            <div id="rawTab" class="tab-panel">
+                                <div class="raw-toolbar">
+                                    <span id="rawStatus">Raw file editor</span>
+                                    <button id="reloadFileBtn" class="btn btn-small btn-ghost">Reload File</button>
+                                </div>
+                                <textarea id="rawEditor" spellcheck="false" placeholder="Select a file to load raw config..."></textarea>
+                            </div>
+
+                            <div id="backupsTab" class="tab-panel">
+                                <div class="helper-card warning">
+                                    Restoring a backup also creates a fresh backup of the current file first.
+                                </div>
+                                <div id="backupList" class="backup-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <div id="toastRoot" class="toast-root"></div>
+        <div id="confirmModal" class="modal hidden">
+            <div class="modal-card">
+                <h3 id="confirmTitle">Confirm</h3>
+                <p id="confirmMessage">Are you sure?</p>
+                <div class="modal-actions">
+                    <button id="confirmCancel" class="btn btn-ghost">Cancel</button>
+                    <button id="confirmOk" class="btn btn-blue">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

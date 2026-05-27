@@ -18,9 +18,9 @@ local function debugPrint(...)
 end
 
 local function trim(value)
-    -- IMPORTANT: string.gsub returns two values (newString, replacementCount).
-    -- Returning the chained gsub directly can leak the replacement count into calls
-    -- like tonumber(trim(value)), where Lua treats it as tonumber(value, base).
+    
+    
+    
     local out = tostring(value or '')
     out = out:gsub('^%s+', '')
     out = out:gsub('%s+$', '')
@@ -95,7 +95,7 @@ local function isEditablePath(path)
     if p:find('/node_modules/', 1, true) then return false end
     if p:find('/stream/', 1, true) then return false end
     if p:find('/html/', 1, true) or p:find('/ui/', 1, true) then
-        -- Only allow UI files when the name itself screams config/settings.
+        
         return p:find('config', 1, true) ~= nil or p:find('settings', 1, true) ~= nil
     end
     return true
@@ -150,8 +150,8 @@ end
 local function isWindowsPath(path)
     path = tostring(path or '')
 
-    -- FiveM's server Lua sandbox may not expose the normal Lua `package` global.
-    -- Detect Windows from the resource path instead of using package.config.
+    
+    
     if path:match('^%a:[/\\]') then return true end
     if path:find('\\', 1, true) then return true end
 
@@ -195,7 +195,7 @@ local function contentLooksLikeConfig(path, content)
     if ext ~= 'lua' then return false end
 
     local s = tostring(content or '')
-    -- Real config files in the uploaded pack use these patterns constantly.
+    
     if s:find('local%s+Config%s*=', 1, false) then return true end
     if s:find('Config%s*=%s*Config%s+or%s+{}', 1, false) then return true end
     if s:find('Config%s*=%s*{', 1, false) then return true end
@@ -734,8 +734,8 @@ local function keyFromLine(line)
 end
 
 local function splitDefaultOrExpression(key, rhs)
-    -- Many configs use: Config.Value = Config.Value or vec4(...).
-    -- Admins still need that default value to show as a normal vector/string/number field.
+    
+    
     local clean = trim(stripInlineComment(rhs or ''))
     local left, expr = clean:match('^([%w_%.:%[%]\"\']+)%s+or%s+(.+)$')
     if left and trim(left) == trim(key or '') and expr and expr ~= '' then

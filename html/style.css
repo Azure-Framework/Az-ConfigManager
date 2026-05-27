@@ -809,7 +809,7 @@ button { user-select: none; }
 
 @media (max-width: 1400px) { .shell { width: calc(100vw - 48px); height: calc(100vh - 48px); grid-template-columns: 280px minmax(0,1fr); } .workspace { grid-template-columns: 250px minmax(0,1fr); } }
 
-/* v5.1 hard override: prevents sidebar/filter overlap and keeps all lists scrollable */
+
 .sidebar { display:flex !important; flex-direction:column !important; }
 .sidebar > * { flex:0 0 auto !important; }
 #resourceList { flex:1 1 auto !important; min-height:0 !important; overflow-y:auto !important; padding-bottom:180px !important; }
